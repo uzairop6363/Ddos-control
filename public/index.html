@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ddos Website Hacking Server Made By C9 UZAIR</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>💣 Ddos Website Hacking Server 💣</h1>
+  <h3>Made By C9 UZAIR</h3>
+
+  <label>Target URL:</label>
+  <input type="text" id="target" placeholder="http://localhost:3000">
+
+  <label>Concurrent Requests:</label>
+  <input type="number" id="concurrency" value="10">
+
+  <label>Rounds:</label>
+  <input type="number" id="rounds" value="5">
+
+  <button onclick="startAttack()">Start Attack</button>
+
+  <div id="log"></div>
+
+  <script>
+    function logMessage(msg) {
+      const logDiv = document.getElementById('log');
+      logDiv.innerHTML += msg + "<br>";
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function startAttack() {
+      const target = document.getElementById('target').value;
+      const c = document.getElementById('concurrency').value;
+      const r = document.getElementById('rounds').value;
+
+      document.getElementById('log').innerHTML = "Connecting...<br>";
+
+      const evtSource = new EventSource(`/attack?target=${encodeURIComponent(target)}&c=${c}&r=${r}`);
+
+      evtSource.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.msg) {
+          logMessage(data.msg);
+        } else if (data.status) {
+          logMessage(`Request ${data.id}: Status ${data.status}`);
+        } else if (data.error) {
+          logMessage(`Request ${data.id}: ERROR - ${data.error}`);
+        }
+      };
+
+      evtSource.onerror = function() {
+        logMessage("Connection closed.");
+        evtSource.close();
+      };
+    }
+  </script>
+</body>
+</html>
