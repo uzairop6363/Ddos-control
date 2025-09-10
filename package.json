@@ -1,0 +1,8 @@
+{
+  "name": "ddos-control-panel",
+  "version": "2.0.0",
+  "description": "Interactive Real-Time DDOS Test UI - Made By C9 UZAIR",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}
